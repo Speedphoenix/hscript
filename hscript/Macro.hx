@@ -142,14 +142,14 @@ class Macro {
 		};
 	}
 
+	function getPos(e : hscript.Expr): Position {
+		#if hscriptPos
+		return haxe.macro.PositionTools.make({ file : pInfos.file, min : pInfos.min + e.pmin, max : pInfos.min + e.pmax });
+		#else
+		return p;
+		#end
+	}
 	public function convert( e : hscript.Expr ) : Expr {
-		function getPos(e : hscript.Expr): Position {
-			#if hscriptPos
-			return haxe.macro.PositionTools.make({ file : pInfos.file, min : pInfos.min + e.pmin, max : pInfos.min + e.pmax });
-			#else
-			return p;
-			#end
-		}
 		return { expr : switch( #if hscriptPos e.e #else e #end ) {
 			case EConst(c):
 				EConst(switch(c) {
